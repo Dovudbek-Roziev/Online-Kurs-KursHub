@@ -8,11 +8,11 @@ export default function SiteFooter() {
     <footer className="mt-auto border-t border-[var(--border-soft)] bg-[var(--surface)]/80 backdrop-blur-md pt-16 pb-8 text-center sm:text-left transition-colors duration-300">
       <div className="shell grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-4">
-          <Link to="/" className="flex items-center gap-3 justify-center sm:justify-start">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--text-main)] text-sm font-bold text-[var(--bg)] shadow-lg">
-              KH
+          <Link to="/" className="flex items-center gap-2.5 justify-center sm:justify-start">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+              <span className="text-xs font-black text-white tracking-wider">KH</span>
             </div>
-            <span className="text-lg font-bold tracking-tight text-[var(--text-main)]">KursHub</span>
+            <span className="text-lg font-black tracking-tight bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">KursHub</span>
           </Link>
           <p className="text-sm leading-relaxed text-[var(--text-soft)]">
             {t("landingText")?.substring(0, 70)}...

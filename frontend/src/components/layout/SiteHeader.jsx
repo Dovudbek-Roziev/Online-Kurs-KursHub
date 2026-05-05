@@ -41,11 +41,12 @@ export default function SiteHeader() {
           
           {/* Logo */}
           <div className="flex items-center z-10">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--text-main)] text-sm font-bold text-[var(--bg)]">
-                KH
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow duration-300">
+                <span className="text-xs font-black text-white tracking-wider">KH</span>
+                <div className="absolute inset-0 rounded-xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <span className="text-lg font-bold tracking-tight text-[var(--text-main)] hidden sm:block">KursHub</span>
+              <span className="text-lg font-black tracking-tight hidden sm:block bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">KursHub</span>
             </Link>
           </div>
 
