@@ -27,8 +27,9 @@ services:
         sync: false
       - key: STRIPE_SECRET_KEY
         sync: false
-  - type: static
+  - type: web
     name: online-course-frontend
+    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
