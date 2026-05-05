@@ -48,7 +48,7 @@ export default function SiteFooter() {
       </div>
       
       <div className="shell mt-16 pt-8 border-t border-[var(--border-soft)] text-center text-sm font-medium text-[var(--text-dim)] flex flex-col sm:flex-row justify-between items-center gap-4">
-        <p>© {new Date().getFullYear()} KursHub. {t("copyright")}</p>
+        <p>© {new Date().getFullYear()} KursHub. {t("copyright")} · Muallif: Roziev Dovudbek</p>
         <div className="flex items-center gap-6">
           <span className="hover:text-[var(--text-main)] cursor-pointer transition-colors">Telegram</span>
           <span className="hover:text-[var(--text-main)] cursor-pointer transition-colors">Instagram</span>
