@@ -39,8 +39,13 @@ export default function AdminSidebar({ activeTab, setActiveTab }) {
     <>
       {/* Mobile Top Bar */}
       <div className="fixed inset-x-0 top-0 z-[60] flex items-center justify-between bg-[var(--surface-strong)] px-5 py-4 border-b border-[var(--border-soft)] backdrop-blur-xl lg:hidden">
-        <h2 className="text-lg font-black tracking-tighter text-[var(--text-main)]">{t("adminPanel")}</h2>
-        <button 
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-md shadow-indigo-500/30">
+            <span className="text-[11px] font-black text-white tracking-wider">KH</span>
+          </div>
+          <span className="text-base font-black bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">KursHub</span>
+        </div>
+        <button
           onClick={() => setIsOpen(!isOpen)}
           className="rounded-xl bg-[var(--surface)] p-2.5 text-[var(--text-main)] shadow-sm border border-[var(--border-soft)]"
         >
@@ -61,10 +66,15 @@ export default function AdminSidebar({ activeTab, setActiveTab }) {
         fixed inset-y-0 left-0 z-[58] flex w-72 flex-col bg-[var(--surface-strong)] border-r border-[var(--border-soft)] transition-transform duration-300 ease-in-out shadow-2xl
         ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
-        <div className="hidden items-center justify-between p-8 lg:flex">
-          <div>
-            <h2 className="text-2xl font-black tracking-tight text-[var(--text-main)]">{t("adminPanel")}</h2>
-            <p className="text-xs font-bold uppercase tracking-widest text-[var(--text-dim)]">{t("management")}</p>
+        <div className="hidden items-center p-6 lg:flex border-b border-[var(--border-soft)] mb-2">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+              <span className="text-xs font-black text-white tracking-wider">KH</span>
+            </div>
+            <div>
+              <span className="text-lg font-black bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">KursHub</span>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-dim)]">{t("management")}</p>
+            </div>
           </div>
         </div>
 
