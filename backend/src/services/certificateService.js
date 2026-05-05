@@ -6,8 +6,11 @@ function findSystemFont(filename) {
   const dirs = [
     process.env.WINDIR ? path.join(process.env.WINDIR, "Fonts") : null,
     "C:/Windows/Fonts",
+    "/usr/share/fonts/truetype/dejavu",
+    "/usr/share/fonts/dejavu",
     "/usr/share/fonts/truetype/msttcorefonts",
     "/usr/share/fonts/truetype/liberation",
+    "/usr/share/fonts/TTF",
   ].filter(Boolean);
   for (const dir of dirs) {
     try {
@@ -39,8 +42,12 @@ function buildCertificateBuffer({ userName, courseTitle, completionDate, certifi
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
 
-    const rFont = findSystemFont("arial.ttf");
-    const bFont = findSystemFont("arialbd.ttf");
+    const rFont = findSystemFont("arial.ttf") ||
+                  findSystemFont("DejaVuSans.ttf") ||
+                  findSystemFont("LiberationSans-Regular.ttf");
+    const bFont = findSystemFont("arialbd.ttf") ||
+                  findSystemFont("DejaVuSans-Bold.ttf") ||
+                  findSystemFont("LiberationSans-Bold.ttf");
     if (rFont) doc.registerFont("FR", rFont);
     if (bFont) doc.registerFont("FB", bFont);
     const fR = rFont ? "FR" : "Helvetica";
@@ -75,8 +82,8 @@ function buildCertificateBuffer({ userName, courseTitle, completionDate, certifi
     doc.rect(29, 29, W - 58, 88).fill(NAVY);
 
     doc.font(fB).fontSize(9.5).fillColor(GOLD2)
-      .text("ОБРАЗОВАТЕЛЬНАЯ ПЛАТФОРМА", 29, 42, {
-        width: W - 58, align: "center", characterSpacing: 4,
+      .text("KursHub · ОБРАЗОВАТЕЛЬНАЯ ПЛАТФОРМА", 29, 42, {
+        width: W - 58, align: "center", characterSpacing: 3,
       });
 
     doc.font(fB).fontSize(29).fillColor(WHITE)
