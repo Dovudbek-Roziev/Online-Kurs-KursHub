@@ -586,7 +586,9 @@ const ru = {
   newChat: "Новый чат",
   noChats: "Нет чатов",
   replyPlaceholder: "Написать ответ...",
-  selectChatHint: "Выберите чат для ответа"
+  selectChatHint: "Выберите чат для ответа",
+  author: "Автор",
+  search: "Поиск"
 };
 
 export default ru;

@@ -579,7 +579,9 @@ const uz = {
   newChat: "Yangi chat",
   noChats: "Chatlar yo'q",
   replyPlaceholder: "Javob yozish...",
-  selectChatHint: "Javob yozish uchun chatni tanlang"
+  selectChatHint: "Javob yozish uchun chatni tanlang",
+  author: "Muallif",
+  search: "Qidirish"
 };
 
 export default uz;

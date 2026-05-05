@@ -63,110 +63,127 @@ export default function CoursesPage() {
         align="left"
       />
 
-      <div className="mt-12 space-y-12">
-        {/* SLEEK HORIZONTAL FILTERS */}
-        <div className="space-y-6">
-          {/* Main Filter Row */}
-          <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center">
-            {/* Search Bar */}
-            <div className="relative flex-1 group">
-              <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-dim)] group-focus-within:text-[var(--accent)] transition-colors" />
-              <input 
-                className="w-full bg-[var(--surface)] border border-[var(--border-soft)] text-[var(--text-main)] rounded-[1.5rem] py-4 pl-12 pr-4 text-sm focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 outline-none transition-all placeholder:text-[var(--text-dim)]/40 shadow-sm"
-                placeholder={t("searchPlaceholder")}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </div>
+      <div className="mt-10 space-y-10">
+        {/* FILTERS BLOCK */}
+        <div className="rounded-2xl border border-[var(--border-soft)] bg-[var(--surface)] p-5 space-y-5 shadow-sm">
 
-            {/* Filter Pills Group */}
-            <div className="flex flex-wrap items-center gap-3">
-              {/* Pricing Pill */}
-              <div className="flex items-center gap-1 bg-[var(--surface)] p-1 rounded-2xl border border-[var(--border-soft)] shadow-sm">
-                {[
-                  { id: "", label: t("allPrices") },
-                  { id: "free", label: t("free") },
-                  { id: "paid", label: t("paid") }
-                ].map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => setPricing(p.id)}
-                    className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-tight transition-all ${
-                      pricing === p.id 
-                        ? "bg-[var(--text-main)] text-[var(--bg)] shadow-md" 
-                        : "text-[var(--text-dim)] hover:text-[var(--text-main)]"
-                    }`}
-                  >
-                    {p.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Rating Pill */}
-              <div className="flex items-center gap-1 bg-[var(--surface)] p-1 rounded-2xl border border-[var(--border-soft)] shadow-sm">
-                {[
-                  { id: "", label: t("allLabel") },
-                  { id: "3", label: "3+" },
-                  { id: "4", label: "4+" },
-                  { id: "5", label: "5" }
-                ].map((r) => (
-                  <button
-                    key={r.id}
-                    onClick={() => setMinRating(r.id)}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-xl text-[10px] font-black transition-all ${
-                      minRating === r.id 
-                        ? "bg-[var(--text-main)] text-[var(--bg)] shadow-md" 
-                        : "text-[var(--text-dim)] hover:text-[var(--text-main)]"
-                    }`}
-                  >
-                    {r.id && <FiStar className={minRating === r.id ? "fill-current" : "text-amber-500"} />}
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Reset Button */}
-              {(category || pricing || minRating || query) && (
-                <button 
-                  onClick={clearFilters}
-                  className="h-10 w-10 flex items-center justify-center rounded-2xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                  title={t("cancel")}
-                >
-                  <FiX />
-                </button>
-              )}
-            </div>
+          {/* Search */}
+          <div className="relative group">
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-dim)] group-focus-within:text-[var(--accent)] text-base transition-colors" />
+            <input
+              className="w-full bg-[var(--bg)] border border-[var(--border-soft)] text-[var(--text-main)] rounded-xl py-3.5 pl-11 pr-4 text-sm focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/10 outline-none transition-all placeholder:text-[var(--text-dim)]"
+              placeholder={t("searchPlaceholder")}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-[var(--surface-strong)] text-[var(--text-dim)] hover:text-[var(--text-main)] transition-colors"
+              >
+                <FiX className="text-xs" />
+              </button>
+            )}
           </div>
 
-          {/* Categories Pill Bar - Scrollable */}
-          <div className="relative overflow-hidden">
-            <div className="flex items-center gap-4 overflow-x-auto pb-1 no-scrollbar scroll-smooth">
+          {/* Divider */}
+          <div className="border-t border-[var(--border-soft)]" />
+
+          {/* Filters Row */}
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+            <div className="flex flex-wrap gap-3">
+              {/* Price filter */}
+              <div>
+                <p className="text-[10px] font-bold text-[var(--text-dim)] uppercase tracking-widest mb-2">{t("pricing")}</p>
+                <div className="flex items-center gap-1 bg-[var(--bg)] border border-[var(--border-soft)] rounded-xl p-1">
+                  {[
+                    { id: "", label: t("allPrices") },
+                    { id: "free", label: t("free") },
+                    { id: "paid", label: t("paid") }
+                  ].map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => setPricing(p.id)}
+                      className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        pricing === p.id
+                          ? "bg-[var(--accent)] text-white shadow-sm"
+                          : "text-[var(--text-soft)] hover:text-[var(--text-main)] hover:bg-[var(--surface-strong)]"
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Rating filter */}
+              <div>
+                <p className="text-[10px] font-bold text-[var(--text-dim)] uppercase tracking-widest mb-2">{t("minRating")}</p>
+                <div className="flex items-center gap-1 bg-[var(--bg)] border border-[var(--border-soft)] rounded-xl p-1">
+                  {[
+                    { id: "", label: t("allLabel") },
+                    { id: "3", label: "3+" },
+                    { id: "4", label: "4+" },
+                    { id: "5", label: "5★" }
+                  ].map((r) => (
+                    <button
+                      key={r.id}
+                      onClick={() => setMinRating(r.id)}
+                      className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                        minRating === r.id
+                          ? "bg-amber-500 text-white shadow-sm"
+                          : "text-[var(--text-soft)] hover:text-[var(--text-main)] hover:bg-[var(--surface-strong)]"
+                      }`}
+                    >
+                      {r.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Reset */}
+            {(category || pricing || minRating || query) && (
               <button
-                onClick={() => setCategory("")}
-                className={`flex-none px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all border ${
-                  !category 
-                    ? "bg-[var(--accent)] text-white border-transparent shadow-lg shadow-[var(--accent)]/20" 
-                    : "bg-[var(--surface)] text-[var(--text-soft)] border-[var(--border-soft)] hover:border-[var(--text-dim)]"
-                }`}
+                onClick={clearFilters}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white text-xs font-bold transition-all"
               >
-                {t("allCategories")}
+                <FiX /> {t("cancel")}
               </button>
-              {categories.map((c) => (
+            )}
+          </div>
+
+          {/* Categories */}
+          <div>
+            <p className="text-[10px] font-bold text-[var(--text-dim)] uppercase tracking-widest mb-3">{t("allCategories")}</p>
+            <div className="relative overflow-hidden">
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
                 <button
-                  key={c}
-                  onClick={() => setCategory(c)}
-                  className={`flex-none px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all border ${
-                    category === c 
-                      ? "bg-[var(--accent)] text-white border-transparent shadow-lg shadow-[var(--accent)]/20" 
-                      : "bg-[var(--surface)] text-[var(--text-soft)] border-[var(--border-soft)] hover:border-[var(--text-dim)]"
+                  onClick={() => setCategory("")}
+                  className={`flex-none px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
+                    !category
+                      ? "bg-[var(--accent)] text-white border-transparent shadow-md"
+                      : "bg-[var(--bg)] text-[var(--text-soft)] border-[var(--border-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
                   }`}
                 >
-                  {c}
+                  {t("allCategories")}
                 </button>
-              ))}
+                {categories.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setCategory(c)}
+                    className={`flex-none px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
+                      category === c
+                        ? "bg-[var(--accent)] text-white border-transparent shadow-md"
+                        : "bg-[var(--bg)] text-[var(--text-soft)] border-[var(--border-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                    }`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+              <div className="absolute right-0 top-0 bottom-1 w-10 bg-gradient-to-l from-[var(--surface)] to-transparent pointer-events-none" />
             </div>
-            {/* Fade effect for scroll */}
-            <div className="absolute right-0 top-0 bottom-2 w-16 bg-gradient-to-l from-[var(--bg)] to-transparent pointer-events-none" />
           </div>
         </div>
 
