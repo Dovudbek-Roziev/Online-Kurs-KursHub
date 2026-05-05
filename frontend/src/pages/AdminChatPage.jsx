@@ -105,8 +105,8 @@ export default function AdminChatPage() {
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-main)] flex">
       <AdminSidebar activeTab="chat" setActiveTab={() => {}} />
 
-      <main className="flex-1 lg:pl-72 flex flex-col h-screen pt-[60px] lg:pt-0">
-        <div className="flex-1 flex overflow-hidden">
+      <main className="flex-1 lg:pl-72 flex flex-col h-screen">
+        <div className="flex-1 flex overflow-hidden mt-[61px] lg:mt-0">
 
           {/* ── Conversations list ── */}
           <aside className={`
@@ -114,6 +114,7 @@ export default function AdminChatPage() {
             flex-col w-full lg:w-80 shrink-0
             border-r border-[var(--border-soft)]
             bg-[var(--surface)]
+            overflow-hidden
           `}>
             {/* Header */}
             <div className="px-5 py-4 border-b border-[var(--border-soft)]">
