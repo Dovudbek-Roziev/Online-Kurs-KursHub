@@ -581,7 +581,9 @@ const uz = {
   replyPlaceholder: "Javob yozish...",
   selectChatHint: "Javob yozish uchun chatni tanlang",
   author: "Muallif",
-  search: "Qidirish"
+  search: "Qidirish",
+  freeCertBadge: "Bepul Sertifikat",
+  onlineBadge: "24/7 Online"
 };
 
 export default uz;

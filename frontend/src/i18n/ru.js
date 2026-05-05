@@ -588,7 +588,9 @@ const ru = {
   replyPlaceholder: "Написать ответ...",
   selectChatHint: "Выберите чат для ответа",
   author: "Автор",
-  search: "Поиск"
+  search: "Поиск",
+  freeCertBadge: "Бесплатный Сертификат",
+  onlineBadge: "24/7 Онлайн"
 };
 
 export default ru;

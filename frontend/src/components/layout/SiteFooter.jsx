@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useSettings } from "../../context/SettingsContext";
+import { FiAward, FiZap, FiBookOpen } from "react-icons/fi";
 
 export default function SiteFooter() {
   const { t } = useSettings();
@@ -49,10 +50,16 @@ export default function SiteFooter() {
       
       <div className="shell mt-16 pt-8 border-t border-[var(--border-soft)] text-center text-sm font-medium text-[var(--text-dim)] flex flex-col sm:flex-row justify-between items-center gap-4">
         <p>© {new Date().getFullYear()} KursHub. {t("copyright")} · {t("author")}: Roziev Dovudbek</p>
-        <div className="flex items-center gap-6">
-          <span className="hover:text-[var(--text-main)] cursor-pointer transition-colors">Telegram</span>
-          <span className="hover:text-[var(--text-main)] cursor-pointer transition-colors">Instagram</span>
-          <span className="hover:text-[var(--text-main)] cursor-pointer transition-colors">YouTube</span>
+        <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-end">
+          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20">
+            <FiBookOpen className="text-sm" /> 50+ {t("navCourses")}
+          </span>
+          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold border border-amber-500/20">
+            <FiAward className="text-sm" /> {t("freeCertBadge")}
+          </span>
+          <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/10 text-violet-400 text-xs font-bold border border-violet-500/20">
+            <FiZap className="text-sm" /> {t("onlineBadge")}
+          </span>
         </div>
       </div>
     </footer>
