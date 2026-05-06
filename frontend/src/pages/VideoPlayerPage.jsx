@@ -137,6 +137,15 @@ export default function VideoPlayerPage() {
     } catch (err) { console.error("Progress save failed:", err); }
   }
 
+  async function react(type) {
+    try {
+      const data = await apiFetch(`/courses/videos/${videoId}/reaction`, { method: "POST", token, body: { type } });
+      // Toggle logic: if same reaction was sent, it gets removed by backend
+      const newReaction = payload.reaction === type ? null : type;
+      setPayload((prev) => ({ ...prev, video: { ...prev.video, likes: data.likes, dislikes: data.dislikes }, reaction: newReaction }));
+    } catch (err) { console.error("Reaction error:", err); }
+  }
+
   async function handleQuizSubmit() {
     try {
       const chapterId = payload.video.chapterId;
@@ -306,8 +315,8 @@ export default function VideoPlayerPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                <div className="space-y-3 lg:max-w-2xl">
+              <div className="flex flex-col gap-6">
+                <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-black text-[var(--accent)] uppercase tracking-[0.2em]">{t("currentLesson")}</span>
                     {payload.progress?.watched && <HiCheckCircle className="text-emerald-500" />}
@@ -316,15 +325,35 @@ export default function VideoPlayerPage() {
                   <p className="text-sm font-medium leading-relaxed text-[var(--text-dim)]">{payload.video.description}</p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center justify-start gap-2 sm:gap-3">
                   <button
-                    className={`flex items-center gap-2 rounded-2xl px-8 py-3 text-xs font-black uppercase shadow-xl transition-all ${
-                      payload.progress?.watched ? "bg-emerald-500 text-[var(--bg)]" : "bg-[var(--accent)] text-[var(--bg)] hover:scale-105 active:scale-95"
+                    onClick={() => react("like")}
+                    className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs font-black uppercase transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+                      payload.reaction === "like"
+                        ? "bg-rose-500 text-white shadow-lg shadow-rose-500/40 ring-2 ring-rose-400/30"
+                        : "bg-[var(--surface)] border-2 border-[var(--border-soft)] text-[var(--text-main)] hover:border-rose-500/50 hover:bg-rose-500/5"
                     }`}
-                    onClick={() => saveProgress(true)}
                   >
-                    <HiCheckCircle className="text-lg" />
-                    {payload.progress?.watched ? t("completed") : t("markCompleted")}
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5" fill={payload.reaction === "like" ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    <span className="hidden sm:inline">{payload.video.likes || 0}</span>
+                    <span className="sm:hidden text-xs">{payload.video.likes || 0}</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => react("dislike")}
+                    className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs font-black uppercase transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+                      payload.reaction === "dislike"
+                        ? "bg-slate-700 text-white shadow-lg shadow-slate-700/40 ring-2 ring-slate-600/30"
+                        : "bg-[var(--surface)] border-2 border-[var(--border-soft)] text-[var(--text-main)] hover:border-slate-500/50 hover:bg-slate-500/5"
+                    }`}
+                  >
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5" fill={payload.reaction === "dislike" ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
+                    </svg>
+                    <span className="hidden sm:inline">{payload.video.dislikes || 0}</span>
+                    <span className="sm:hidden text-xs">{payload.video.dislikes || 0}</span>
                   </button>
                 </div>
               </div>
