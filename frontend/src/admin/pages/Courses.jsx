@@ -6,8 +6,9 @@ import { useAuth } from '../../context/AuthContext';
 import { useSettings } from '../../context/SettingsContext';
 
 const Courses = () => {
-  const { t } = useSettings();
+  const { t, language } = useSettings();
   const { token } = useAuth();
+  const lbl = (uz, ru) => language === 'ru' ? ru : uz;
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -52,14 +53,14 @@ const Courses = () => {
                   <th className="px-3 md:px-6 py-3 md:py-4 font-black hidden md:table-cell">{t('category') || 'Kategoriya'}</th>
                   <th className="px-3 md:px-6 py-3 md:py-4 font-black text-center">{t('priceField') || 'Narx'}</th>
                   <th className="px-3 md:px-6 py-3 md:py-4 font-black hidden sm:table-cell">{t('status') || 'Holat'}</th>
-                  <th className="px-3 md:px-6 py-3 md:py-4 font-black text-center">Amallar</th>
+                  <th className="px-3 md:px-6 py-3 md:py-4 font-black text-center">{lbl('Amallar', 'Действия')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border-soft)]">
                 {filtered.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="px-6 py-12 text-center text-xs font-bold text-[var(--text-dim)]">
-                      Kurs topilmadi
+                      {lbl("Kurs topilmadi", "Курс не найден")}
                     </td>
                   </tr>
                 ) : (
@@ -68,14 +69,14 @@ const Courses = () => {
                       <td className="px-3 md:px-6 py-3 md:py-5 truncate max-w-[180px]">
                         <div className="font-bold text-[var(--text-main)] truncate text-[10px] md:text-sm">{course.title}</div>
                         <div className="text-[8px] md:text-[10px] text-[var(--text-dim)] uppercase mt-0.5 font-bold tracking-wider">
-                          {course.views || 0} ko'rishlar
+                          {course.views || 0} {lbl("ko'rishlar", "просм.")}
                         </div>
                       </td>
                       <td className="px-3 md:px-6 py-3 md:py-5 text-[var(--text-soft)] font-medium text-[10px] md:text-sm hidden md:table-cell">
                         {course.category || '-'}
                       </td>
                       <td className="px-3 md:px-6 py-3 md:py-5 text-[var(--text-soft)] font-bold text-[10px] md:text-sm text-center">
-                        {course.price === 0 ? 'Bepul' : `$${course.price}`}
+                        {course.price === 0 ? lbl('Bepul', 'Бесплатно') : `$${course.price}`}
                       </td>
                       <td className="px-3 md:px-6 py-3 md:py-5 hidden sm:table-cell">
                         <span className={`inline-flex items-center px-2 md:px-2.5 py-0.5 rounded-lg text-[8px] md:text-[10px] font-black uppercase tracking-wider ${
@@ -83,7 +84,7 @@ const Courses = () => {
                             ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
                             : 'bg-[var(--surface-sunken)] text-[var(--text-dim)] border border-[var(--border-soft)]'
                         }`}>
-                          {course.isPublished ? 'Aktiv' : 'Draft'}
+                          {course.isPublished ? lbl('Aktiv', 'Активен') : 'Draft'}
                         </span>
                       </td>
                       <td className="px-3 md:px-6 py-3 md:py-5">
@@ -93,7 +94,7 @@ const Courses = () => {
                             className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-600/10 hover:bg-violet-600 text-violet-400 hover:text-white rounded-lg text-[10px] font-bold transition-all"
                           >
                             <FiSettings size={12} />
-                            Boshqarish
+                            {lbl('Boshqarish', 'Управление')}
                           </Link>
                         </div>
                       </td>
