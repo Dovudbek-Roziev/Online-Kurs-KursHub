@@ -558,6 +558,11 @@ const uz = {
   chatEmptyText: "Admin tekshirib, kursni ochib beradi.",
 
   // Quiz
+  quizQuestion: "Savol",
+  quizOf: "/",
+  quizNextBtn: "Keyingi",
+  quizPrevBtn: "Oldingi",
+  quizTimeUpMsg: "Vaqt tugadi!",
   chapterQuiz: "Bo'lim testi",
   questions: "savol",
   submitQuiz: "Testni topshirish",

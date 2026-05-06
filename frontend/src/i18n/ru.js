@@ -565,6 +565,11 @@ const ru = {
   chatEmptyText: "Админ проверит и откроет доступ к курсу.",
 
   // Quiz
+  quizQuestion: "Вопрос",
+  quizOf: "/",
+  quizNextBtn: "Далее",
+  quizPrevBtn: "Назад",
+  quizTimeUpMsg: "Время вышло!",
   chapterQuiz: "Тест раздела",
   questions: "вопрос",
   submitQuiz: "Сдать тест",
