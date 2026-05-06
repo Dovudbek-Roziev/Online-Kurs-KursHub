@@ -34,32 +34,27 @@ const NAV_GROUPS = (t, language) => [
   },
 ];
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = () => {
   const { t, language } = useSettings();
   const { user } = useAuth();
 
   const groups = NAV_GROUPS(t, language);
 
-  const initials = user?.name
-    ? user.name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
-    : 'AD';
-
   return (
     <>
-      {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden"
-          onClick={onClose}
-        />
-      )}
-
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-16 z-[60] flex h-[calc(100vh-4rem)] w-64 flex-col border-r border-[var(--border-soft)] bg-[var(--bg)] transition-transform duration-300 lg:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className="fixed left-0 top-16 z-30 hidden h-[calc(100vh-4rem)] w-64 flex-col border-r border-[var(--border-soft)] bg-[var(--bg)] transition-colors duration-300 lg:flex"
       >
+        <div className="border-b border-[var(--border-soft)] px-4 py-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--text-dim)]">
+            {language === 'ru' ? 'Панель управления' : 'Boshqaruv paneli'}
+          </p>
+          <p className="mt-1 truncate text-sm font-black text-[var(--text-main)]">
+            {user?.name || 'Admin'}
+          </p>
+        </div>
+
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5 scrollbar-none">
           {groups.map((group, i) => (
@@ -70,7 +65,6 @@ const Sidebar = ({ isOpen, onClose }) => {
                     key={item.path}
                     to={item.path}
                     end={item.end}
-                    onClick={onClose}
                     className={({ isActive }) =>
                       `flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-semibold transition-all ${
                         isActive
