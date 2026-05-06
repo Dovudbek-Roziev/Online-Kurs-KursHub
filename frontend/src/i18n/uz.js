@@ -1,4 +1,9 @@
 const uz = {
+  completionBadge: "Tabriklaymiz!",
+  courseCompletedTitle: "Kursni tugatdingiz!",
+  courseCompletedMsg: "Siz kursni muvaffaqiyatli tugatdingiz:",
+  courseCompletedCertHint: "Sertifikatingiz profilingizda tayyor. Uni yuklab olishingiz mumkin.",
+  goToProfile: "Sertifikatga o'tish",
   navCourses: "Kurslar",
   navProfile: "Profil",
   navAdmin: "Admin",

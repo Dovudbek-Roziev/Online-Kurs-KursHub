@@ -48,6 +48,14 @@
     0% { transform: translateX(-20px); opacity: 0; }
     100% { transform: translateX(0); opacity: 1; }
   }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+  @keyframes completionPop {
+    0%   { opacity: 0; transform: scale(0.85) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
 }
 
 @layer utilities {

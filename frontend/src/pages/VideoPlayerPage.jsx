@@ -60,6 +60,7 @@ export default function VideoPlayerPage() {
   const [currentQIdx, setCurrentQIdx] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
+  const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -126,6 +127,10 @@ export default function VideoPlayerPage() {
       if (forceComplete) {
         const freshData = await apiFetch(`/courses/videos/${videoId}/open`, { method: "POST", token });
         setPayload(freshData);
+        const allVideos = freshData.course.chapters.flatMap(ch => ch.videos);
+        if (allVideos.length > 0 && allVideos.every(v => v.progress?.watched)) {
+          setShowCompletion(true);
+        }
       } else {
         setPayload((prev) => ({ ...prev, progress: updatedProgress }));
       }
@@ -161,6 +166,100 @@ export default function VideoPlayerPage() {
     setComment(""); setReplyTarget(null);
   }
 
+  const CONFETTI_COLORS = ["#6366f1","#8b5cf6","#a855f7","#ec4899","#f59e0b","#10b981","#3b82f6","#f97316","#06b6d4","#e11d48"];
+
+  function Confetti() {
+    return (
+      <div className="pointer-events-none fixed inset-0 z-[70] overflow-hidden">
+        {Array.from({ length: 80 }).map((_, i) => {
+          const color = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+          const left = (i * 1.27 + Math.sin(i * 0.9) * 18) % 100;
+          const delay = (i * 0.04) % 2.8;
+          const duration = 2.4 + (i % 6) * 0.4;
+          const size = 5 + (i % 5) * 2;
+          return (
+            <div key={i} style={{
+              position: 'absolute', left: `${left}%`, top: '-24px',
+              width: size, height: i % 3 === 0 ? size : size * 0.45,
+              backgroundColor: color,
+              borderRadius: i % 4 === 0 ? '50%' : i % 4 === 1 ? '2px' : '0',
+              animationName: 'confettiFall',
+              animationDuration: `${duration}s`,
+              animationDelay: `${delay}s`,
+              animationTimingFunction: 'ease-in',
+              animationFillMode: 'forwards',
+              transform: `rotate(${i * 43}deg)`,
+            }} />
+          );
+        })}
+      </div>
+    );
+  }
+
+  function CourseCompletionModal({ course, onClose }) {
+    return (
+      <>
+        <Confetti />
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div style={{ animationName: 'completionPop', animationDuration: '0.5s', animationFillMode: 'forwards' }}
+            className="relative w-full max-w-md overflow-hidden rounded-3xl shadow-2xl">
+            {/* Gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700" />
+            {/* Glow orbs */}
+            <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-12 -right-12 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
+
+            <div className="relative px-8 py-10 text-center text-white">
+              {/* Trophy */}
+              <div className="mb-4 flex justify-center">
+                <span className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15 text-5xl ring-4 ring-white/20">
+                  🏆
+                </span>
+              </div>
+
+              <p className="mb-1 text-[11px] font-black uppercase tracking-[0.25em] text-white/60">
+                {t("completionBadge")}
+              </p>
+              <h2 className="mb-2 text-2xl font-black leading-tight sm:text-3xl">
+                {t("courseCompletedTitle")}
+              </h2>
+              <p className="mb-1 text-sm font-bold text-white/75">
+                {t("courseCompletedMsg")}
+              </p>
+              {course?.title && (
+                <p className="mb-4 text-base font-black text-amber-300">«{course.title}»</p>
+              )}
+
+              {/* Certificate hint */}
+              <div className="mb-6 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[11px] font-bold text-white/80">
+                  🎓 {t("courseCompletedCertHint")}
+                </p>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+                <Link
+                  to="/profile?tab=certs"
+                  onClick={onClose}
+                  className="flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
+                >
+                  🎖️ {t("goToProfile")}
+                </Link>
+                <button
+                  onClick={onClose}
+                  className="rounded-2xl border border-white/25 bg-white/10 px-6 py-3 text-sm font-black text-white backdrop-blur-sm transition-all hover:bg-white/20"
+                >
+                  {t("closeBtn")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   if (error) {
     return (
       <div className="min-h-[calc(100vh-5rem)] page-bg flex items-center justify-center p-6">
@@ -186,6 +285,12 @@ export default function VideoPlayerPage() {
 
   return (
     <>
+      {showCompletion && (
+        <CourseCompletionModal
+          course={payload?.course}
+          onClose={() => setShowCompletion(false)}
+        />
+      )}
       <div className="min-h-[calc(100vh-5rem)] page-bg p-4 sm:p-6 lg:p-8">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid gap-8 xl:grid-cols-[1fr_400px]">
