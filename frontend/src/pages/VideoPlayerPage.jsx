@@ -137,11 +137,6 @@ export default function VideoPlayerPage() {
     } catch (err) { console.error("Progress save failed:", err); }
   }
 
-  async function react(type) {
-    const data = await apiFetch(`/courses/videos/${videoId}/reaction`, { method: "POST", token, body: { type } });
-    setPayload((prev) => ({ ...prev, video: { ...prev.video, ...data }, reaction: type }));
-  }
-
   async function handleQuizSubmit() {
     try {
       const chapterId = payload.video.chapterId;
@@ -322,24 +317,6 @@ export default function VideoPlayerPage() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    className={`flex items-center gap-2 rounded-2xl border px-6 py-3 text-xs font-black uppercase transition-all ${
-                      payload.reaction === "like" ? "bg-rose-500 border-transparent text-white" : "bg-[var(--surface)] border-[var(--border-soft)] text-[var(--text-main)] hover:border-rose-500/50"
-                    }`}
-                    onClick={() => react("like")}
-                  >
-                    <svg className="h-4 w-4" fill={payload.reaction === "like" ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                    {t("like")}
-                  </button>
-                  <button
-                    className={`flex items-center gap-2 rounded-2xl border px-6 py-3 text-xs font-black uppercase transition-all ${
-                      payload.reaction === "dislike" ? "bg-slate-700 border-transparent text-white" : "bg-[var(--surface)] border-[var(--border-soft)] text-[var(--text-main)] hover:border-slate-500"
-                    }`}
-                    onClick={() => react("dislike")}
-                  >
-                    <svg className="h-4 w-4" fill={payload.reaction === "dislike" ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" /></svg>
-                    {t("dislike")}
-                  </button>
                   <button
                     className={`flex items-center gap-2 rounded-2xl px-8 py-3 text-xs font-black uppercase shadow-xl transition-all ${
                       payload.progress?.watched ? "bg-emerald-500 text-[var(--bg)]" : "bg-[var(--accent)] text-[var(--bg)] hover:scale-105 active:scale-95"
