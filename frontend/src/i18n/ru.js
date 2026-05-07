@@ -1,4 +1,9 @@
 const ru = {
+  completionBadge: "Поздравляем!",
+  courseCompletedTitle: "Курс завершён!",
+  courseCompletedMsg: "Вы успешно завершили курс:",
+  courseCompletedCertHint: "Ваш сертификат готов в профиле. Вы можете его скачать.",
+  goToProfile: "Перейти к сертификату",
   navCourses: "\u041a\u0443\u0440\u0441\u044b",
   navProfile: "\u041f\u0440\u043e\u0444\u0438\u043b\u044c",
   navAdmin: "\u0410\u0434\u043c\u0438\u043d",
@@ -570,6 +575,7 @@ const ru = {
   quizNextBtn: "Далее",
   quizPrevBtn: "Назад",
   quizTimeUpMsg: "Время вышло!",
+  quizTimeExpiredBanner: "Время на вопрос истекло! Переход к следующему...",
   chapterQuiz: "Тест раздела",
   questions: "вопрос",
   submitQuiz: "Сдать тест",

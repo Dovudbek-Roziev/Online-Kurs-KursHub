@@ -568,6 +568,7 @@ const uz = {
   quizNextBtn: "Keyingi",
   quizPrevBtn: "Oldingi",
   quizTimeUpMsg: "Vaqt tugadi!",
+  quizTimeExpiredBanner: "Savol vaqti tugadi! Keyingisiga o'tilmoqda...",
   chapterQuiz: "Bo'lim testi",
   questions: "savol",
   submitQuiz: "Testni topshirish",

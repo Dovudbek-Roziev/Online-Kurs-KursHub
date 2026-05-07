@@ -61,6 +61,7 @@ export default function VideoPlayerPage() {
   const [timeLeft, setTimeLeft] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
   const [showCompletion, setShowCompletion] = useState(false);
+  const [quizTimerExpired, setQuizTimerExpired] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -101,9 +102,11 @@ export default function VideoPlayerPage() {
       setTimeLeft(remaining);
       if (remaining <= 0) {
         clearInterval(interval);
+        setQuizTimerExpired(true);
         setTimeout(() => {
+          setQuizTimerExpired(false);
           setCurrentQIdx((ci) => (ci < quiz.questions.length - 1 ? ci + 1 : ci));
-        }, 600);
+        }, 1600);
       }
     }, 1000);
     return () => clearInterval(interval);
@@ -117,6 +120,22 @@ export default function VideoPlayerPage() {
     setCurrentQIdx(0);
   }
 
+  async function checkCourseCompletion(freshData) {
+    const allVideos = freshData.course.chapters.flatMap(ch => ch.videos);
+    if (allVideos.length === 0 || !allVideos.every(v => v.progress?.watched)) return;
+    const quizChecks = await Promise.all(
+      freshData.course.chapters.map(async (ch) => {
+        try {
+          const q = await apiFetch(`/quiz/chapters/${ch._id}`, { token });
+          if (!q || !q.questions || q.questions.length === 0) return true;
+          const r = await apiFetch(`/quiz/chapters/${ch._id}/result`, { token }).catch(() => null);
+          return r?.passed === true;
+        } catch { return true; }
+      })
+    );
+    if (quizChecks.every(Boolean)) setShowCompletion(true);
+  }
+
   async function saveProgress(forceComplete = false) {
     if (!playerRef.current) return;
     try {
@@ -127,10 +146,7 @@ export default function VideoPlayerPage() {
       if (forceComplete) {
         const freshData = await apiFetch(`/courses/videos/${videoId}/open`, { method: "POST", token });
         setPayload(freshData);
-        const allVideos = freshData.course.chapters.flatMap(ch => ch.videos);
-        if (allVideos.length > 0 && allVideos.every(v => v.progress?.watched)) {
-          setShowCompletion(true);
-        }
+        await checkCourseCompletion(freshData);
       } else {
         setPayload((prev) => ({ ...prev, progress: updatedProgress }));
       }
@@ -156,6 +172,10 @@ export default function VideoPlayerPage() {
       setSubmitResult(result);
       setSubmitted(true);
       setQuizResult({ score: result.score, total: result.total, passed: result.passed });
+      if (result.passed && payload) {
+        const freshData = await apiFetch(`/courses/videos/${videoId}/open`, { method: "POST", token }).catch(() => null);
+        if (freshData) { setPayload(freshData); await checkCourseCompletion(freshData); }
+      }
     } catch (err) { console.error("Quiz submit error:", err); }
   }
 
@@ -510,6 +530,14 @@ export default function VideoPlayerPage() {
               <div className="p-5">
                 {!submitted ? (
                   <>
+                    {/* Timer expired banner */}
+                    {quizTimerExpired && (
+                      <div className="mb-4 flex items-center gap-2 rounded-xl bg-red-500/15 border border-red-500/30 px-4 py-3 animate-pulse">
+                        <span className="text-lg">⏰</span>
+                        <p className="text-sm font-black text-red-400">{t("quizTimeExpiredBanner")}</p>
+                      </div>
+                    )}
+
                     {/* Timer + progress */}
                     <div className="flex items-center gap-3 mb-6">
                       <QuizTimer timeLeft={timeLeft} totalTime={totalTime} />
