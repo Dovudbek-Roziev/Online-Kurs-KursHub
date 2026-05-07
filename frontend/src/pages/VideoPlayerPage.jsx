@@ -72,10 +72,14 @@ export default function VideoPlayerPage() {
   }, [token, videoId]);
 
   useEffect(() => {
-    if (payload?.progress?.lastTime && playerRef.current) {
+    if (!payload || !playerRef.current) return;
+    if (payload?.progress?.lastTime) {
       playerRef.current.currentTime = payload.progress.lastTime;
     }
-  }, [payload]);
+    if (autoplayVideo) {
+      playerRef.current.play().catch(() => {});
+    }
+  }, [payload?.video?._id]);
 
   useEffect(() => {
     if (!payload) return;
@@ -328,7 +332,6 @@ export default function VideoPlayerPage() {
                     ref={playerRef}
                     src={payload.video.videoUrl}
                     controls
-                    autoPlay={autoplayVideo}
                     onPause={() => saveProgress(false)}
                     onEnded={() => saveProgress(true)}
                   />
